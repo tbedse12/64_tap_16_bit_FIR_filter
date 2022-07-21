@@ -23,7 +23,8 @@
 Testbench needs to     
   Provide input at clk1      
   Provide clk1 and clk2      
-  The spec for clk1 is 10 kHz; that for clk2 is designer-specified      
+  The spec for clk1 is 10 kHz   
+  that for clk2 is designer-specified        
   Perform the signature analyzer     
   
   
