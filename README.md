@@ -16,15 +16,15 @@
 
 ### Building Blocks. 
   Dual-clock FIFO (with designer-specified depth) 
-  Coefficient memory, CMEM (64 x 2B) 
-  Fixed-point ALU(Design/employ distributed arithmetic hardware to perform the multiply-and-accumulate (MAC))
+  Coefficient memory, CMEM (64 x 2B).  
+  Fixed-point ALU(Design/employ distributed arithmetic hardware to perform the multiply-and-accumulate (MAC)). 
   Register file
   
-Testbench needs to
-  Provide input at clk1 
-  Provide clk1 and clk2 
-  The spec for clk1 is 10 kHz; that for clk2 is designer-specified
-  Perform the signature analyzer
+Testbench needs to. 
+  Provide input at clk1   
+  Provide clk1 and clk2   
+  The spec for clk1 is 10 kHz; that for clk2 is designer-specified.  
+  Perform the signature analyzer.  
   
   
 
