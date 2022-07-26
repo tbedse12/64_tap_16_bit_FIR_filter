@@ -1,4 +1,4 @@
-# FA21_4823_FIR_project
+# 64 tap 16 bit FIR filter
 This is a 64 tap 16 point serial FIR filter based on Distrubuted arithmetic(DA).  
 There are also gate level files, and python for generating LUT and test result.   
 
@@ -32,8 +32,7 @@ Testbench needs to
 ### Result wave
 <img width="1213" alt="image" src="https://user-images.githubusercontent.com/103384755/180323733-e07061e7-cbb0-4b90-a190-55dc539b16fd.png">.   
 
-
-##Design Specification.  
+### Design Specification
 | Spec |  Value  |
 |------|---------|
 |Frequency|100MHz|
