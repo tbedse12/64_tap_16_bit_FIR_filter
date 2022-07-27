@@ -33,12 +33,12 @@ Testbench needs to
 <img width="1213" alt="image" src="https://user-images.githubusercontent.com/103384755/180323733-e07061e7-cbb0-4b90-a190-55dc539b16fd.png">.   
 
 ### Design Specification
-| Spec |  Value  |
-|------|---------|
-|Frequency|100MHz|
-|Chip size|.     |
-|Power|.         |
-|Technology|IBM 130nm|
+| Spec     |     Value     |
+|----------|---------------|
+|Frequency |100MHz         |
+|Chip size |5168916.15 µm^2|
+|Power     |               |
+|Technology|IBM 130nm      |
 
   
 
