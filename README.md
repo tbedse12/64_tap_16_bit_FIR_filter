@@ -35,9 +35,9 @@ Testbench needs to
 ### Design Specification
 | Spec     |     Value     |
 |----------|---------------|
-|Frequency |100MHz         |
-|Chip size |5168916.15 µm^2|
-|Power     |               |
+|Frequency |100 MHz        |
+|Chip size |383409.94 µm^2 |
+|Power     |5.46e-5 mW     |
 |Technology|IBM 130nm      |
 
   
