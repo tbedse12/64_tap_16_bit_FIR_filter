@@ -28,7 +28,7 @@ always@(posedge clk_r or negedge rstn)begin
 		w2r_1 <= 0;
 		w2r_2 <= 0;
 	end
-	else if (in_read_ctrl && !empty && !in_write_ctrl)begin  //in_read_ctrl
+	else if (in_read_ctrl && !empty)begin  //in_read_ctrl
 		out_read_data <= mem[r_addr[depth-1:0]];
 		r_addr <= r_addr + 1;
 		w2r_1 <= gray_w_addr;
@@ -46,7 +46,7 @@ always@(posedge clk_w or negedge rstn)begin
 		r2w_1 <= 0;
 		r2w_2 <= 0;
 	end
-	else if (in_write_ctrl && !full && !in_read_ctrl)begin  //in_write_ctrl
+	else if (in_write_ctrl && !full)begin  //in_write_ctrl
 		mem[w_addr[depth-1:0]] <= in_write_data;
 		w_addr <= w_addr + 1;
 		r2w_1 <= gray_r_addr;

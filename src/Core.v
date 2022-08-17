@@ -23,7 +23,7 @@ reg  enable_inWr, enable_outRd;
 integer DA_Wr_count, i, DA_Rd_count;
 
 fifo fifo( 
-.clk_r(clk1), 
+.clk_r(clk2), 
 .clk_w(clk1), 
 .rstn(rstn), 
 .in_read_ctrl(in_read_ctrlX), 
@@ -81,22 +81,23 @@ always@(posedge clk1 or negedge rstn)begin
 	read_count_buffer_2 <= read_count_buffer_1;
 	out_read_dataX_buffer_1 <= out_read_dataX;
 	out_read_dataX_buffer_2 <= out_read_dataX;
+
 	//fifo logic
-	if(out_is_emptyX)begin // if empty, write till full, if full, read till empty
+	if(out_is_emptyX)begin // keep reading till empty
 		in_read_ctrlX  <= 0;
 		able2write     <= 1;
 	     end
-	else if(out_is_fullX) begin 
+	else if(!out_is_fullX && !out_is_emptyX) begin 
 		in_read_ctrlX  <= 1;
-		able2write     <= 0;
+		able2write     <= 1;
 	     end
 	else begin
 		in_read_ctrlX  <= in_read_ctrlX;
-		able2write     <= able2write;
+		able2write     <= 0;
 	     end
 
-
-	if(read_count[5:0] != 0 || read_count_buffer_1 == 63)begin //create reg to transfer fifo data
+	//create reg to transfer fifo data
+	if(read_count[5:0] != 0 || read_count_buffer_1 == 63)begin 
 		if(read_count_buffer_1 < 16)begin 
 			for(i=0; i<16; i=i+1)begin 
 				fifo_out_reg[i][read_count_buffer_1] <= out_read_dataX[i];
@@ -123,8 +124,24 @@ always@(posedge clk1 or negedge rstn)begin
 
 
 
+	// input data into LUT
+	if (read_count_buffer_1 > 15 && read_count_buffer_1 < 32)begin 
+				out_read_dataX_1 <= fifo_out_reg[read_count_buffer_1-16];
+				out_read_dataX_4 <= 0;
+								      end
+	else if (read_count_buffer_1 > 31 && read_count_buffer_1 < 48)begin
+				out_read_dataX_2 <= fifo_out_reg[read_count_buffer_1-16];
+				out_read_dataX_1 <= 0;
+					    			      end
+	else if (read_count_buffer_1 > 47 && read_count_buffer_1 < 64)begin 
+				out_read_dataX_3 <= fifo_out_reg[read_count_buffer_1-16];
+				out_read_dataX_2 <= 0;
+				if(read_count_buffer_1 == 63)
+					enable_inWr <= 1;
+					   			      end
+	else out_read_dataX_1 <= 0;	
 
-	if(enable_inWr)begin  // input data into LUT
+	if(enable_inWr)begin  
 			if(DA_Wr_count < 16)begin
 				out_read_dataX_4 <= fifo_out_reg[DA_Wr_count + 48];
 				out_read_dataX_3 <= 0;
@@ -132,31 +149,13 @@ always@(posedge clk1 or negedge rstn)begin
 					    end
 			else begin 
 				enable_inWr	<= 0;
-				DA_Wr_count		<= 0;
+				DA_Wr_count	<= 0;
 			end
 			end
 
-	else if (read_count_buffer_1 > 47 && read_count_buffer_1 < 64)begin
-				out_read_dataX_3 <= fifo_out_reg[read_count_buffer_1-16];
-				out_read_dataX_2 <= 0;
-				if(read_count_buffer_1 == 63)
-					enable_inWr <= 1;
-					   			      end
 
-	else if (read_count_buffer_1 > 31 && read_count_buffer_1 < 48)begin
-				out_read_dataX_2 <= fifo_out_reg[read_count_buffer_1-16];
-				out_read_dataX_1 <= 0;
-					    			      end
-
-	else if (read_count_buffer_1 > 15 && read_count_buffer_1 < 32)begin
-				out_read_dataX_1 <= fifo_out_reg[read_count_buffer_1-16];
-				out_read_dataX_4 <= 0;
-								      end
-	else out_read_dataX_1 <= 0;	
-
-
-
-	if(read_count_buffer_2 > 15 && read_count_buffer_2 < 32) begin //accumulating LUT outputs
+	//accumulating LUT outputs
+	if(read_count_buffer_2 > 15 && read_count_buffer_2 < 32) begin 
 			if(read_count_buffer_2 == 31)
 				sum_partial <= sum_partial - (DA_out_1 <<< (read_count_buffer_2-16));
 			else
@@ -176,7 +175,7 @@ always@(posedge clk1 or negedge rstn)begin
 			else
 				sum_partial <= sum_partial + (DA_out_3 <<< (read_count_buffer_2-48));
 					   end	
-	else if(enable_outRd) begin  
+	 if(enable_outRd) begin  
 			if(DA_Rd_count == 15) begin 
 				sum_partial <= sum_partial - (DA_out_4 <<< DA_Rd_count);
 				DA_Rd_count <= DA_Rd_count + 1;
@@ -186,10 +185,10 @@ always@(posedge clk1 or negedge rstn)begin
 				DA_Rd_count <= DA_Rd_count + 1;
 					   end	
 			else begin 
-					sum_out <= sum_partial;
+					sum_out 	<= sum_partial;  //output data
 					sum_partial 	<= 0;
-					enable_outRd	<= 0;
-					DA_Rd_count	<= 0;		 
+					DA_Rd_count	<= 0;
+					enable_outRd	<= 0;		 
 						end
 			end
 end
