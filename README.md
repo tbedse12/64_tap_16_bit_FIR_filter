@@ -3,14 +3,6 @@ This is a 64 tap 16 point serial FIR filter based on Distrubuted arithmetic(DA).
 There are also gate level files, and python for generating LUT and test result.   
 
 ## Block Diagram
-<img width="944" alt="image" src="https://user-images.githubusercontent.com/103384755/180321194-88e515f7-8ea1-46e0-a1d1-873cb14d3bb2.png">
-
-
-
-
-
-
-
   Load all the inputs in the FIFO (FIFO)   
   Load all the coefficients in the coeff. memory (CMEM)     
   Compute for the throughput of 10 kS/s (exclude data loading time)   
