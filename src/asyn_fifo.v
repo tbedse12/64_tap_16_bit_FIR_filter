@@ -18,7 +18,7 @@ output wire [depth-1:0]read_count;
 assign gray_w_addr = (w_addr >> 1) ^ w_addr;
 assign gray_r_addr = (r_addr >> 1) ^ r_addr;
 assign empty = (gray_r_addr == w2r_2);
-assign full = (gray_w_addr == {~r2w_2[6:5],r2w_2[4:0]});
+assign full = (gray_w_addr == {~r2w_2[6:5],r2w_2[4:0]});//first 2 bits are diff because of using gray code
 assign read_count = r_addr[depth-1:0];
 
 
